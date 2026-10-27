@@ -187,7 +187,7 @@ RUN python -m venv /opt/eidmcp \
     && /opt/eidmcp/bin/pip install --no-cache-dir \
         "cryptography>=50.0.0" "aiohttp>=3.14.4" "yarl>=1.25.1" "certifi>=2026.10.19" \
         "opentelemetry-api>=1.45.1" "opentelemetry-sdk>=1.45.1" \
-        azure-core azure-identity "mcp[cli]>=1.30.0,<2" "fastmcp>=3.4.10,<4" msgraph-core msgraph-sdk python-dotenv \
+        azure-core azure-identity "mcp[cli]>=1.30.0,<2" "fastmcp>=3.4.11,<4" msgraph-core msgraph-sdk python-dotenv \
     && rm -rf /opt/eidmcp/lib/python*/site-packages/pip \
         /opt/eidmcp/lib/python*/site-packages/pip-*.dist-info \
         /opt/eidmcp/bin/pip /opt/eidmcp/bin/pip3 /opt/eidmcp/bin/pip3.*

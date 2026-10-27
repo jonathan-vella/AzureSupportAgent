@@ -26,6 +26,13 @@ updates:
       # Scoped to major ONLY so 1.x security patches (e.g. CVE-2026-59950) still arrive.
       - dependency-name: "mcp"
         update-types: ["version-update:semver-major"]
+      # fastmcp-slim 4.x requires mcp>=2.0.0,<3.0.0 (via its client/server/mcp extras) and
+      # mcp-types>=2.0.0. Keep fastmcp-slim on 3.x (which receives backported security fixes
+      # such as 3.4.10 for GHSA-7xgj-8392-5q4r) while mcp is on 1.x.
+      - dependency-name: "fastmcp-slim"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "fastmcp"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "npm"
     directory: "/frontend"

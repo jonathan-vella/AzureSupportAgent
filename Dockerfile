@@ -29,7 +29,7 @@ RUN npm run build
 # ---- Stage 2: rebuild Azure Quick Review with a patched Go toolchain ----------------
 # Keep azqr's checksum-verified release source unchanged while patching the compiler and
 # embedded modules independently; upstream binary releases lag their security fixes.
-FROM golang:1.26.9-bookworm@sha256:d9c68c2c51161e12fd77e4c6320687c9cd86e1af1e3ad6e6cd63ff970641453c AS azqr
+FROM golang:1.26.10-bookworm@sha256:632dff7351799a5a9954a48dc06670ade72ee44e8c351cdc0e5a57af2fea21af AS azqr
 ARG AZQR_VERSION=4.0.1
 ARG AZQR_SOURCE_COMMIT=ffda262cbccc33bf4f472c07f81758839b165b1a
 ARG AZQR_SOURCE_SHA256=afef4ba8c09945668145d0a035da87922ec26ba1461077d2c1bf418a12e8321f
@@ -114,7 +114,7 @@ RUN apt-get update \
     # requirements cannot patch this private environment's urllib3 or OAuthlib either.
     && /opt/az/bin/python3 -m pip install --no-cache-dir \
         "cryptography>=50.0.0" "setuptools>=83.0.0" "PyJWT>=2.15.0" \
-        "urllib3>=2.8.0,<3" "oauthlib>=4.0.0,<5" \
+        "urllib3>=2.8.0,<3" "oauthlib>=4.0.0,<5" "certifi>=2026.10.19" \
     && npm install -g "npm@${NPM_VERSION}" \
     && npm install -g "@azure/mcp@${AZURE_MCP_VERSION}" \
     && npm cache clean --force \
@@ -185,7 +185,9 @@ COPY third_party/ /app/third_party/
 RUN python -m venv /opt/eidmcp \
     && /opt/eidmcp/bin/pip install --no-cache-dir --upgrade pip \
     && /opt/eidmcp/bin/pip install --no-cache-dir \
-        "cryptography>=50.0.0" "aiohttp>=3.14.4" "yarl>=1.25.1" azure-core azure-identity "mcp[cli]>=1.30.0,<2" msgraph-core msgraph-sdk fastmcp python-dotenv \
+        "cryptography>=50.0.0" "aiohttp>=3.14.4" "yarl>=1.25.1" "certifi>=2026.10.19" \
+        "opentelemetry-api>=1.45.1" "opentelemetry-sdk>=1.45.1" \
+        azure-core azure-identity "mcp[cli]>=1.30.0,<2" "fastmcp>=3.4.10,<4" msgraph-core msgraph-sdk python-dotenv \
     && rm -rf /opt/eidmcp/lib/python*/site-packages/pip \
         /opt/eidmcp/lib/python*/site-packages/pip-*.dist-info \
         /opt/eidmcp/bin/pip /opt/eidmcp/bin/pip3 /opt/eidmcp/bin/pip3.*

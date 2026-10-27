@@ -53,11 +53,11 @@ line-length = 100
 target-version = "py312"
 
 [tool.ruff.lint]
-# Security rules are ON permanently, so a NEW violation fails instead of being
-# discovered during a pre-deploy sweep.
-#   S      = flake8-bandit  (the security ruleset)
-#   ASYNC  = async antipatterns
-extend-select = ["S", "ASYNC"]
+# Explicitly pin the core lint ruleset (E4/E7/E9/F) alongside the security rules (S/ASYNC).
+# Ruff 0.16+ expanded its implicit default ruleset to include style/refactor families (B, UP,
+# RUF, I, SIM, FURB, ISC...); pinning `select` explicitly keeps local and CI lint deterministic
+# across Ruff upgrades while ensuring every new S/ASYNC security violation still fails.
+select = ["E4", "E7", "E9", "F", "S", "ASYNC"]
 
 # Every ignore below was individually reviewed on 2026-07-31 against the running code,
 # and cross-checked with the 2026-06-27 full scan (.security/SECURITY_SCAN_REPORT.md).
